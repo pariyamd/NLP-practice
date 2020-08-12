@@ -14,14 +14,13 @@ def back_off(w2, w1, w0, w3, w4, l2, l1, l0):
     b = 0
     if w0 in unigram_prob.keys():
         b = unigram_prob[w0] * l0
+
     if (w1, w0) in bigram.keys():
         b += bigram_prob[(w1, w0)] * l1
+
     if (w2, w1, w0) in trigram.keys():
         b += trigram_prob[(w2, w1, w0)] * l2
-    if (w1, w0, w3) in trigram.keys():
-        b += trigram_prob[(w1, w0, w3)] * l2
-    if (w0, w3, w4) in trigram.keys():
-        b += trigram_prob[(w0, w3, w4)] * l2
+
     return b
 
 
@@ -98,22 +97,19 @@ with open('Train_data.rtf', 'r') as text:
 
 for k in unigram:
     unigram_prob[k] = unigram[k] / num_of_words
-# for k, v in unigram.items():
-#     print(k, ':', v)
+
 
 for line in my_txt:
     bigram_prob = bigram_cal(line)
 for k in bigram.keys():
     bigram_prob[k] = bigram[k] / unigram[k[0]]
-# for k, v in bigram_prob.items():
-#     print(k, ' : ', v)
+
 
 for line in my_txt:
     trigram_prob = trigram_cal(line)
 for k in trigram.keys():
     trigram_prob[k] = trigram[k] / bigram[(k[0], k[1])]
-# for k, v in trigram_prob.items():
-#     print(k, ' : ', v)
+
 
 # read test data
 with open('Test_data.rtf', 'r') as text:
@@ -151,7 +147,7 @@ def f(landas):
     return wrong
 
 
-initial_guess = [0.05,0.55,0.4]
+initial_guess = [0.3,0.3,0.3]
 
 # Says one minus the sum of all variables must be zero
 cons = ({'type': 'eq', 'fun': lambda x: 1 - sum(x)})
